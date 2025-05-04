@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JPG to PNG Converter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #dbe6f6, #c5796d);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      color: #333;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .file-input {
+      position: relative;
+      margin: 20px 0;
+    }
+
+    .file-input input {
+      opacity: 0;
+      width: 100%;
+      height: 50px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+    }
+
+    .file-label {
+      background: #fff;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .file-label:hover {
+      transform: scale(1.02);
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      border: none;
+      padding: 14px 30px;
+      font-size: 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    #preview {
+      max-width: 100%;
+      margin-top: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    #downloadLink {
+      display: none;
+      margin-top: 25px;
+      text-decoration: none;
+      background: linear-gradient(135deg, #43e97b, #38f9d7);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 500;
+      transition: transform 0.2s;
+    }
+
+    #downloadLink:hover {
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Convert JPG to PNG</h1>
+
+    <div class="file-input">
+      <label class="file-label">Choose JPG File
+        <input type="file" id="jpgInput" accept="image/jpeg">
+      </label>
+    </div>
+
+    <button onclick="convertToPNG()">Convert Image</button>
+    <br>
+    <a id="downloadLink" download="converted.png">Download PNG</a>
+    <img id="preview" alt="Image Preview" />
+    <canvas id="canvas" style="display: none;"></canvas>
+  </div>
+
+  <script>
+    const image = new Image();
+
+    document.getElementById('jpgInput').addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          image.src = e.target.result;
+          document.getElementById('preview').src = e.target.result;
+          document.getElementById('preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function convertToPNG() {
+      if (!image.src) {
+        alert("Please select a JPG file first.");
+        return;
+      }
+
+      const canvas = document.getElementById('canvas');
+      canvas.width = image.width;
+      canvas.height = image.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(image, 0, 0);
+
+      const pngData = canvas.toDataURL('image/png');
+      const downloadLink = document.getElementById('downloadLink');
+      downloadLink.href = pngData;
+      downloadLink.style.display = 'inline-block';
+    }
+  </script>
+</body>
+</html>
