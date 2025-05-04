@@ -1,171 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JPG to PNG Converter</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #dbe6f6, #c5796d);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 24px;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      padding: 40px 30px;
-      width: 100%;
-      max-width: 500px;
-      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #f0f2f5, #e0ecff);
       color: #333;
-      animation: fadeIn 1s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      margin: 0;
     }
 
     h1 {
-      margin-bottom: 20px;
-      font-size: 2.2rem;
-      font-weight: 600;
-      color: #222;
+      font-size: 2.5rem;
+      margin-bottom: 0.5em;
     }
 
-    .file-input {
-      position: relative;
-      margin: 20px 0;
-    }
-
-    .file-input input {
-      opacity: 0;
+    .converter {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 500px;
       width: 100%;
-      height: 50px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      cursor: pointer;
     }
 
-    .file-label {
-      background: #fff;
-      padding: 15px 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      font-weight: 500;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .file-label:hover {
-      transform: scale(1.02);
+    input[type="file"] {
+      margin-bottom: 1em;
     }
 
     button {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
+      padding: 10px 20px;
+      background: #4a90e2;
+      color: white;
       border: none;
-      padding: 14px 30px;
+      border-radius: 8px;
       font-size: 1rem;
-      border-radius: 12px;
       cursor: pointer;
-      margin-top: 20px;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: background 0.3s ease;
     }
 
     button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      background: #357ac8;
     }
 
     #preview {
-      max-width: 100%;
       margin-top: 20px;
-      border-radius: 12px;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-      display: none;
     }
 
-    #downloadLink {
-      display: none;
-      margin-top: 25px;
-      text-decoration: none;
-      background: linear-gradient(135deg, #43e97b, #38f9d7);
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-weight: 500;
-      transition: transform 0.2s;
-    }
-
-    #downloadLink:hover {
-      transform: translateY(-2px);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    footer {
+      margin-top: 50px;
+      font-size: 0.9rem;
+      color: #666;
     }
   </style>
+
+  <!-- Google AdSense global script -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXX"
+          crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="card">
-    <h1>Convert JPG to PNG</h1>
 
-    <div class="file-input">
-      <label class="file-label">Choose JPG File
-        <input type="file" id="jpgInput" accept="image/jpeg">
-      </label>
-    </div>
+  <h1>JPG to PNG Converter</h1>
 
-    <button onclick="convertToPNG()">Convert Image</button>
-    <br>
-    <a id="downloadLink" download="converted.png">Download PNG</a>
-    <img id="preview" alt="Image Preview" />
-    <canvas id="canvas" style="display: none;"></canvas>
+  <!-- AdSense Ad Slot (responsive, full-width) -->
+  <ins class="adsbygoogle"
+       style="display:block; text-align:center;"
+       data-ad-client="ca-pub-XXXX"
+       data-ad-slot="1234567890"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+  <div class="converter">
+    <input type="file" id="fileInput" accept=".jpg, .jpeg" />
+    <br />
+    <button onclick="convertToPNG()">Convert to PNG</button>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <div id="preview"></div>
   </div>
 
+  <footer>
+    Built with ❤️ | Free JPG to PNG Converter
+  </footer>
+
   <script>
-    const image = new Image();
-
-    document.getElementById('jpgInput').addEventListener('change', function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          image.src = e.target.result;
-          document.getElementById('preview').src = e.target.result;
-          document.getElementById('preview').style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
     function convertToPNG() {
-      if (!image.src) {
-        alert("Please select a JPG file first.");
+      const fileInput = document.getElementById('fileInput');
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      const preview = document.getElementById('preview');
+
+      if (fileInput.files.length === 0) {
+        alert("Please select a JPG file.");
         return;
       }
 
-      const canvas = document.getElementById('canvas');
-      canvas.width = image.width;
-      canvas.height = image.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(image, 0, 0);
+      const file = fileInput.files[0];
+      const reader = new FileReader();
 
-      const pngData = canvas.toDataURL('image/png');
-      const downloadLink = document.getElementById('downloadLink');
-      downloadLink.href = pngData;
-      downloadLink.style.display = 'inline-block';
+      reader.onload = function (e) {
+        const img = new Image();
+        img.onload = function () {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          const pngUrl = canvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.href = pngUrl;
+          link.download = 'converted.png';
+          link.textContent = 'Download PNG';
+          link.style.display = 'inline-block';
+          link.style.marginTop = '20px';
+          link.style.color = '#4a90e2';
+          link.style.fontWeight = 'bold';
+          preview.innerHTML = '';
+          preview.appendChild(link);
+        };
+        img.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
     }
   </script>
 </body>
