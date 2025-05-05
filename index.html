@@ -3,149 +3,158 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JPG to PNG Converter</title>
+  <meta name="description" content="Free JPG to PNG image converter. Fast, secure, and online." />
+  <meta name="google-site-verification" content="cScSqJMmdJbj4I9hVWydh4QME8sbi3rYG6X2RMTGX2s" />
+  <title>JPG to PNG Converter - Free & Online</title>
 
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Free online JPG to PNG image converter, easily convert JPG files to high-quality PNG images without losing quality.">
-  <meta name="keywords" content="JPG to PNG, free image converter, image tool, online converter, convert jpg to png">
-  <meta name="author" content="Your Name">
-  
-  <!-- Structured Data (Schema Markup) -->
-  <script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "WebSite",
-    "name": "JPG to PNG Converter",
-    "url": "https://yourusername.github.io/jpg-to-png-converter"
-  }
-  </script>
-
-  <!-- Google AdSense global script -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6231551664321134"
-          crossorigin="anonymous"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #f0f2f5, #e0ecff);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5em;
+    body {
+      background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
 
-    .converter {
-      background: white;
-      padding: 30px;
+    .container {
+      background-color: white;
+      padding: 40px;
       border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
       text-align: center;
       max-width: 500px;
       width: 100%;
     }
 
-    input[type="file"] {
-      margin-bottom: 1em;
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #2c3e50;
     }
 
-    button {
-      padding: 10px 20px;
-      background: #4a90e2;
+    p {
+      color: #555;
+      margin-bottom: 2rem;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .upload-label {
+      display: inline-block;
+      background-color: #4a90e2;
       color: white;
-      border: none;
+      padding: 12px 24px;
       border-radius: 8px;
-      font-size: 1rem;
       cursor: pointer;
       transition: background 0.3s ease;
+      font-weight: 600;
     }
 
-    button:hover {
-      background: #357ac8;
+    .upload-label:hover {
+      background-color: #357ABD;
     }
 
     #preview {
       margin-top: 20px;
+      border-radius: 12px;
+      max-width: 100%;
+      height: auto;
+      display: none;
+    }
+
+    #download {
+      display: none;
+      margin-top: 20px;
+      background-color: #2ecc71;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #download:hover {
+      background-color: #27ae60;
     }
 
     footer {
-      margin-top: 50px;
+      margin-top: 2rem;
       font-size: 0.9rem;
-      color: #666;
+      color: #888;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>JPG to PNG Converter</h1>
+    <p>Convert your JPG images to PNG format instantly and for free.</p>
 
-  <h1>JPG to PNG Converter</h1>
+    <label for="fileInput" class="upload-label">Upload JPG Image</label>
+    <input type="file" id="fileInput" accept=".jpg,.jpeg" />
 
-  <!-- AdSense Ad Slot (responsive, full-width) -->
-  <ins class="adsbygoogle"
-       style="display:block; text-align:center;"
-       data-ad-client="ca-pub-6231551664321134"
-       data-ad-slot="1234567890"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-  <script>
-       (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-
-  <div class="converter">
-    <input type="file" id="fileInput" accept=".jpg, .jpeg" />
-    <br />
-    <button onclick="convertToPNG()">Convert to PNG</button>
     <canvas id="canvas" style="display:none;"></canvas>
-    <div id="preview"></div>
+    <img id="preview" alt="Converted Image Preview" />
+    <br />
+    <a id="download" download="converted.png">Download PNG</a>
+
+    <footer>© 2025 JPG2PNG Converter. All rights reserved.</footer>
   </div>
 
-  <footer>
-    Built with ❤️ | Free JPG to PNG Converter
-  </footer>
-
   <script>
-    function convertToPNG() {
-      const fileInput = document.getElementById('fileInput');
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
-      const preview = document.getElementById('preview');
+    const fileInput = document.getElementById('fileInput');
+    const canvas = document.getElementById('canvas');
+    const preview = document.getElementById('preview');
+    const download = document.getElementById('download');
 
-      if (fileInput.files.length === 0) {
-        alert("Please select a JPG file.");
-        return;
-      }
+    fileInput.addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (!file) return;
 
-      const file = fileInput.files[0];
       const reader = new FileReader();
-
-      reader.onload = function (e) {
+      reader.onload = function (event) {
         const img = new Image();
         img.onload = function () {
           canvas.width = img.width;
           canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0);
-          const pngUrl = canvas.toDataURL('image/png');
-          const link = document.createElement('a');
-          link.href = pngUrl;
-          link.download = 'converted.png';
-          link.textContent = 'Download PNG';
-          link.style.display = 'inline-block';
-          link.style.marginTop = '20px';
-          link.style.color = '#4a90e2';
-          link.style.fontWeight = 'bold';
-          preview.innerHTML = '';
-          preview.appendChild(link);
-        };
-        img.src = e.target.result;
-      };
 
+          const pngUrl = canvas.toDataURL('image/png');
+          preview.src = pngUrl;
+          preview.style.display = 'block';
+
+          download.href = pngUrl;
+          download.style.display = 'inline-block';
+        };
+        img.src = event.target.result;
+      };
       reader.readAsDataURL(file);
-    }
+    });
   </script>
 </body>
 </html>
