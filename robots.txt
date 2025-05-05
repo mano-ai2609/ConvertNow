@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://convertthem.netlify.app/sitemap.xml
