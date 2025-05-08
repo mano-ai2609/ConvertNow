@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://convertitnowfast.netlify.app/sitemap.xml
+Sitemap: https://convertitnowfastt.netlify.app/sitemap.xml
+ 
