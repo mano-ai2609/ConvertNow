@@ -1,117 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Free JPG to PNG converter - fast, secure, no signup required.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Convert JPG to PNG Online</title>
+  <meta name="description" content="Fast and free tool to convert JPG images to PNG format. Simple, beautiful, and effective." />
   <meta name="google-site-verification" content="cScSqJMmdJbj4I9hVWydh4QME8sbi3rYG6X2RMTGX2s" />
-  <title>JPG to PNG Converter - ConvertThem</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6231551664321134"
+     crossorigin="anonymous"></script>
+
   <style>
     body {
-      font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f9f9f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f0f0f0, #e2f3ff);
       color: #333;
     }
     header {
-      background: #4f46e5;
+      background-color: #2b5c8a;
       color: white;
-      padding: 20px;
+      padding: 1rem 2rem;
       text-align: center;
     }
-    nav {
-      margin-top: 10px;
+    h1 {
+      margin: 0;
     }
-    nav a {
-      margin: 0 10px;
-      color: white;
-      text-decoration: none;
-    }
-    .container {
-      max-width: 800px;
-      margin: 30px auto;
+    main {
+      max-width: 600px;
+      margin: 2rem auto;
       background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
     }
     input[type="file"] {
-      margin-top: 20px;
+      display: block;
+      margin: 1rem 0;
     }
-    .footer {
+    .btn {
+      background-color: #2b5c8a;
+      color: white;
+      padding: 0.5rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .output {
+      margin-top: 1rem;
+    }
+    footer {
       text-align: center;
-      padding: 20px;
-      background: #e5e7eb;
-      margin-top: 40px;
+      margin-top: 4rem;
+      color: #777;
+      font-size: 0.9rem;
     }
   </style>
 </head>
-
 <body>
-  <header>
-    <h1>ConvertThem: Free JPG to PNG Converter</h1>
-    <nav>
-      <a href="#how">How It Works</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
 
-  <div class="container">
-    <h2>Convert Your JPG Images to PNG Instantly</h2>
-    <p>This free tool lets you quickly convert JPG images to high-quality PNG format without any signup or watermark. It runs completely in your browser and keeps your images private.</p>
+<header>
+  <h1>JPG to PNG Converter</h1>
+  <p>Free, Fast & Simple Image Converter</p>
+</header>
 
-    <h3>Select a JPG File</h3>
-    <input type="file" accept="image/jpeg" onchange="convertToPNG(event)">
-    <canvas id="canvas" style="display:none;"></canvas>
-    <br>
-    <a id="downloadLink" style="display:none;" download="converted.png">Download PNG</a>
+<main>
+  <input type="file" id="fileInput" accept="image/jpeg" />
+  <button class="btn" onclick="convert()">Convert</button>
+  <div class="output" id="output"></div>
+</main>
 
-    <h3 id="how">How It Works</h3>
-    <ol>
-      <li>Click "Choose File" to upload a JPG image.</li>
-      <li>The image will automatically convert to PNG format.</li>
-      <li>Click "Download PNG" to save the image.</li>
-    </ol>
+<footer>
+  <p>&copy; 2025 ConvertThem | Simple image tools for everyone.</p>
+</footer>
 
-    <h3 id="about">About</h3>
-    <p>ConvertThem is a free online image conversion tool built to be fast, secure, and user-friendly. We do not store your images. Everything happens locally in your browser.</p>
+<script>
+  function convert() {
+    const input = document.getElementById('fileInput');
+    const output = document.getElementById('output');
+    const file = input.files[0];
 
-    <h3 id="contact">Contact</h3>
-    <p>If you have questions or suggestions, contact us at <strong>convert.them.web@gmail.com</strong></p>
-  </div>
-
-  <div class="footer">
-    &copy; 2025 ConvertThem. All rights reserved.
-  </div>
-
-  <script>
-    function convertToPNG(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const img = new Image();
-        img.onload = function () {
-          const canvas = document.getElementById('canvas');
-          canvas.width = img.width;
-          canvas.height = img.height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0);
-          canvas.toBlob(function (blob) {
-            const url = URL.createObjectURL(blob);
-            const link = document.getElementById('downloadLink');
-            link.href = url;
-            link.style.display = 'inline-block';
-          }, 'image/png');
-        }
-        img.src = e.target.result;
-      }
-      reader.readAsDataURL(file);
+    if (!file) {
+      output.innerHTML = '<p>Please select a JPG file first.</p>';
+      return;
     }
-  </script>
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const pngUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = pngUrl;
+        link.download = 'converted.png';
+        link.textContent = 'Download PNG';
+        link.className = 'btn';
+        output.innerHTML = '';
+        output.appendChild(link);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+</script>
+
 </body>
 </html>
